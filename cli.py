@@ -1,51 +1,60 @@
-from logic import make_empty_board, get_winner, other_player
+from logic import check_winner
 
-def display_board(board):
-    """Displays the current state of the Tic-Tac-Toe board."""
-    for row in board:
-        print(" | ".join(cell or " " for cell in row))
-        print("-" * 9)
+def get_empty_board():
+    """
+    Returns an empty 3x3 board.
+    """
+    return [
+        [None, None, None],
+        [None, None, None],
+        [None, None, None],
+    ]
 
-def get_user_move(board, current_player):
-    """Gets a valid user move for the given player."""
+def get_player_input(current_player):
+    """
+    Prompt the current player for their move and return it as (row, col).
+    """
     while True:
         try:
-            row = int(input(f"Player {current_player}, enter the row (0-2): "))
-            col = int(input(f"Player {current_player}, enter the column (0-2): "))
+            move = input(f"Player {current_player}, please enter your move (row,col): ")
+            row, col = map(int, move.split(','))
+            return row, col
+        except (ValueError, IndexError):
+            print("Invalid input. Please try again.")
 
-            if 0 <= row < 3 and 0 <= col < 3 and board[row][col] is None:
-                return row, col
-            else:
-                print("Invalid input or that cell is already taken. Try again.")
-        except ValueError:
-            print("Invalid input. Please enter valid row and column values (0-2).")
+def switch_player(current_player):
+    """
+    Toggle between 'X' and 'O'.
+    """
+    return 'O' if current_player == 'X' else 'X'
 
+def print_board(board):
+    """
+    Print the Tic-Tac-Toe board.
+    """
+    for row in board:
+        print(' '.join([cell if cell is not None else ' ' for cell in row]))
 
-
-def play_tic_tac_toe():
-    """Plays a game of Tic-Tac-Toe."""
-    board = make_empty_board()
+if __name__ == '__main':
+    current_player = 'X'
+    board = get_empty_board()
     winner = None
-    current_player = "X"
-
-    print("Let's play Tic-Tac-Toe!")
 
     while winner is None:
-        display_board(board)
-        row, col = get_user_move(board, current_player)
-        board[row][col] = current_player
+        print_board(board)
+        try:
+            row, col = get_player_input(current_player)
+        except ValueError:
+            continue
 
-        # Switch to the next player.
-        current_player = other_player(current_player)
+        if board[row][col] is None:
+            board[row][col] = current_player
+            winner = check_winner(board)
+            if winner is not None:
+                print(f"Player {current_player} wins!")
+            else:
+                current_player = switch_player(current_player)
+        else:
+            print("That position is already occupied. Try again.")
 
-        winner = get_winner(board)
-
-        if winner:
-            display_board(board)
-            print(f"Player {winner} wins!")
-        elif all(all(cell is not None for cell in row) for row in board):
-            display_board(board)
-            print("It's a draw!")
-
-if __name__ == "__main__":
-    play_tic_tac_toe()
+    print_board(board)
