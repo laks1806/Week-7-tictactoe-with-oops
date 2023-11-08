@@ -1,4 +1,4 @@
-def check_winner(board):
+it add logs fatal: not a git repository (or any parent up to mount point /) Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set). def check_winner(board):
     # check rows
     #    ['X', 'X', 'X'], -> set(['X', 'X', 'X']) -> {'X'}
     #    ['O', 'X', 'O'], -> set(['O', 'X', 'O']) -> {'X', 'O'}
