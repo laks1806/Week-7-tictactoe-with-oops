@@ -1,4 +1,4 @@
-# Week-5+6-Lab-submission-TicTacToe
+# Week-7-Lab-submission-TicTacToe-with OOps
 <H3> Lakshita Singh </H3>
 
 Tic Tac Toe Game Command Line Interface
